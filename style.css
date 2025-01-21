@@ -1,0 +1,13 @@
+body {
+  text-align: center;
+}
+
+.bold {
+  font-weight: 600;
+}
+
+.form-cont {
+  width: 400px;
+  margin: auto;
+  margin-bottom: 50px;
+}
