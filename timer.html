@@ -15,8 +15,29 @@
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="timer.css" />
+    <style>
+      body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: orange; /* Initial background */
+        transition: background-color 1s ease; /* Smooth transition */
+      }
+
+      .timer-cont {
+        background: white;
+        border-radius: 10px;
+        padding: 20px 40px;
+        text-align: center;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .bold {
+        font-weight: bold;
+      }
+    </style>
   </head>
   <body>
     <div class="timer-cont">
@@ -25,16 +46,123 @@
 
       <p class="display-1 bold" id="timer">0:00</p>
 
-      <p class="fs-4 bold">Next Up: Rest Interval - 5 minutes</p>
+      <p class="fs-4 bold" id="next">Next Up: Rest Interval - 5 minutes</p>
       <p class="bold">Actions:</p>
-      <button class="btn btn-primary">🔁 Reset Current Interval</button>
-      <button class="btn btn-primary">➡️ Skip Current Interval</button>
+      <button id="resetBtn" class="btn btn-primary">
+        🔁 Reset Current Interval
+      </button>
+      <button id="skipBtn" class="btn btn-primary">
+        ➡️ Skip Current Interval
+      </button>
 
       <div style="margin-top: 10px">
-        <button class="btn btn-primary">⏸️ Pause Timer</button>
-        <button class="btn btn-primary">❎ End Timer</button>
+        <button id="pauseBtn" class="btn btn-primary">⏸️ Pause Timer</button>
+        <a href="index.html" class="btn btn-primary">❎ End Timer</a>
       </div>
     </div>
+    <audio id="alertSound" src="message-alert-190042.mp3"></audio>
+    <script>
+      // Parse query parameters
+      const params = new URLSearchParams(window.location.search);
+      const work = parseInt(params.get("work"), 10) * 60; // Convert minutes to seconds
+      const rest = parseInt(params.get("rest"), 10) * 60; // Convert minutes to seconds
+
+      // Check if valid work and rest values are provided
+      if (!work || !rest || work <= 0 || rest <= 0) {
+        document.getElementById("timer").textContent =
+          "Invalid or missing data.";
+      } else {
+        const timerElement = document.getElementById("timer");
+        const nextElement = document.getElementById("next");
+        const intervalElement = document.getElementById("interval");
+        const alertSound = document.getElementById("alertSound");
+
+        let isWorkPhase = true; // Start with work phase
+        let isPaused = false;
+        let remainingTime;
+        let interval;
+
+        function updateBackgroundColor() {
+          document.body.style.backgroundColor = isWorkPhase
+            ? "orange"
+            : "limegreen";
+        }
+
+        function playSound() {
+          alertSound.play();
+        }
+
+        function startTimer(duration, nextDuration) {
+          remainingTime = duration;
+
+          // Update the interval and next elements
+          intervalElement.textContent = isWorkPhase
+            ? "Working Interval"
+            : "Rest Interval";
+          nextElement.textContent = `Next Up: ${
+            isWorkPhase ? "Rest Interval" : "Working Interval"
+          } - ${Math.floor(nextDuration / 60)} minute${
+            nextDuration >= 120 ? "s" : ""
+          }`;
+
+          // Update the background color
+          updateBackgroundColor();
+
+          // Countdown logic
+          interval = setInterval(() => {
+            if (isPaused) return; // Pause if isPaused is true
+
+            // Calculate minutes and seconds
+            const minutes = Math.floor(remainingTime / 60);
+            const seconds = remainingTime % 60;
+
+            // Display the remaining time
+            timerElement.textContent = `${minutes}:${
+              seconds < 10 ? "0" : ""
+            }${seconds}`;
+
+            remainingTime -= 1;
+
+            // When the timer ends
+            if (remainingTime < 0) {
+              clearInterval(interval);
+
+              // Play the alert sound
+              playSound();
+
+              // Toggle between work and rest phases
+              isWorkPhase = !isWorkPhase;
+
+              // Start the next timer
+              startTimer(isWorkPhase ? work : rest, isWorkPhase ? rest : work);
+            }
+          }, 1000); // Update every second
+        }
+
+        // Reset the current interval
+        document.getElementById("resetBtn").addEventListener("click", () => {
+          clearInterval(interval); // Stop the current interval
+          startTimer(isWorkPhase ? work : rest, isWorkPhase ? rest : work); // Restart the timer
+        });
+
+        // Skip the current interval
+        document.getElementById("skipBtn").addEventListener("click", () => {
+          clearInterval(interval); // Stop the current interval
+          isWorkPhase = !isWorkPhase; // Switch phases
+          startTimer(isWorkPhase ? work : rest, isWorkPhase ? rest : work); // Start the next phase immediately
+        });
+
+        // Pause and resume the timer
+        document.getElementById("pauseBtn").addEventListener("click", () => {
+          isPaused = !isPaused; // Toggle the pause state
+          document.getElementById("pauseBtn").textContent = isPaused
+            ? "▶️ Resume Timer"
+            : "⏸️ Pause Timer";
+        });
+
+        // Start the first timer
+        startTimer(work, rest);
+      }
+    </script>
   </body>
-  <script></script>
 </html>

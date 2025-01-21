@@ -26,7 +26,7 @@
     <p class="fs-5">Fill out the form below to get productive!</p>
 
     <div class="form-cont">
-      <form action="" style="margin-top: 50px">
+      <form action="" style="margin-top: 50px" id="timerform">
         <div class="container">
           <label for="work" class="form-label bold"
             >How many minutes do you want in your work interval?</label
@@ -36,6 +36,7 @@
             placeholder="Ex: 25"
             id="work"
             class="form-control"
+            required
           />
         </div>
         <div class="container">
@@ -47,25 +48,25 @@
             placeholder="Ex: 5"
             id="rest"
             class="form-control"
+            required
           />
         </div>
-        <button type="submit" class="btn btn-primary">▶️ Start Timer</button>
+        <button type="submit" class="btn btn-primary" style="margin-top: 50px">
+          ▶️ Start Timer
+        </button>
       </form>
     </div>
-
     <script>
-      const form = document.getElementById("myForm");
+      const form = document.getElementById("timerform");
       form.addEventListener("submit", function (event) {
         event.preventDefault(); // Prevent form submission
         const work = document.getElementById("work").value;
         const rest = document.getElementById("rest").value;
 
-        // Save data to localStorage
-        localStorage.setItem("work", work);
-        localStorage.setItem("rest", rest);
-
-        // Redirect to another HTML page
-        window.location.href = "timer.html";
+        // Redirect with query parameters
+        window.location.href = `timer.html?work=${encodeURIComponent(
+          work
+        )}&rest=${encodeURIComponent(rest)}`;
       });
     </script>
   </body>
