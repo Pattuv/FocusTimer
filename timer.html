@@ -42,18 +42,18 @@
   </head>
   <body>
     <div class="timer-cont">
-      <p class="fs-4 bold" style="margin-bottom: 0">You are on a:</p>
-      <p class="fs-2 bold" id="interval">Work Interval</p>
+      <p class="fs-4 bold" style="margin-bottom: 0">You are in a:</p>
+      <p class="fs-2 bold" id="interval">Work Session</p>
 
       <p class="display-1 bold" id="timer">0:00</p>
 
-      <p class="fs-4 bold" id="next">Next Up: Rest Interval - 5 minutes</p>
+      <p class="fs-4 bold" id="next">Next Up: Rest Session - 5 minutes</p>
       <p class="bold">Actions:</p>
       <button id="resetBtn" class="btn btn-primary">
-        🔁 Reset Current Interval
+        🔁 Reset Current Session
       </button>
       <button id="skipBtn" class="btn btn-primary">
-        ➡️ Skip Current Interval
+        ➡️ Skip Current Session
       </button>
 
       <div style="margin-top: 10px">
@@ -99,10 +99,10 @@
 
           // Update the interval and next elements
           intervalElement.textContent = isWorkPhase
-            ? "Work Interval"
-            : "Rest Interval";
+            ? "Work Session"
+            : "Rest Session";
           nextElement.textContent = `Next Up: ${
-            isWorkPhase ? "Rest Interval" : "Work Interval"
+            isWorkPhase ? "Rest Session" : "Work Session"
           } - ${Math.floor(nextDuration / 60)} minute${
             nextDuration >= 120 ? "s" : ""
           }`;
