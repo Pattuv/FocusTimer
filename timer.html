@@ -42,8 +42,8 @@
   </head>
   <body>
     <div class="timer-cont">
-      <p class="fs-4 bold" style="margin-bottom: 0">You are in:</p>
-      <p class="fs-2 bold" id="interval">Working Interval</p>
+      <p class="fs-4 bold" style="margin-bottom: 0">You are on a:</p>
+      <p class="fs-2 bold" id="interval">Work Interval</p>
 
       <p class="display-1 bold" id="timer">0:00</p>
 
@@ -99,10 +99,10 @@
 
           // Update the interval and next elements
           intervalElement.textContent = isWorkPhase
-            ? "Working Interval"
+            ? "Work Interval"
             : "Rest Interval";
           nextElement.textContent = `Next Up: ${
-            isWorkPhase ? "Rest Interval" : "Working Interval"
+            isWorkPhase ? "Rest Interval" : "Work Interval"
           } - ${Math.floor(nextDuration / 60)} minute${
             nextDuration >= 120 ? "s" : ""
           }`;
