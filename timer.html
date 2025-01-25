@@ -16,39 +16,17 @@
       crossorigin="anonymous"
     ></script>
     <link rel="icon" type="image/png" href="logo.png" sizes="32x32" />
-    <style>
-      body {
-        margin: 0;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: orange; /* Initial background */
-        transition: background-color 1s ease; /* Smooth transition */
-      }
-
-      .timer-cont {
-        background: white;
-        border-radius: 10px;
-        padding: 20px 40px;
-        text-align: center;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-      }
-
-      .bold {
-        font-weight: bold;
-      }
-    </style>
+    <link rel="stylesheet" href="timer.css" />
   </head>
   <body>
-    <div class="timer-cont">
-      <p class="fs-4 bold" style="margin-bottom: 0">You are in a:</p>
-      <p class="fs-2 bold" id="interval">Work Session</p>
+    <div id="timer-cont" class="timer-cont" data-bs-theme="light">
+      <p class="fs-4 fw-bold" style="margin-bottom: 0">You are in a:</p>
+      <p class="fs-2 fw-bold" id="interval">Work Session</p>
 
-      <p class="display-1 bold" id="timer">0:00</p>
+      <p class="display-1 fw-bold" id="timer">0:00</p>
 
-      <p class="fs-4 bold" id="next">Next Up: Rest Session - 5 minutes</p>
-      <p class="bold">Actions:</p>
+      <p class="fs-4 fw-bold" id="next">Next Up: Rest Session - 5 minutes</p>
+      <p class="fw-bold">Actions:</p>
       <button id="resetBtn" class="btn btn-primary">
         🔁 Reset Current Session
       </button>
@@ -60,6 +38,36 @@
         <button id="pauseBtn" class="btn btn-primary">⏸️ Pause Timer</button>
         <a href="index.html" class="btn btn-primary">❎ End Timer</a>
       </div>
+      <div
+        class="d-flex justify-content-center align-items-center"
+        style="margin-bottom: 10px; margin-top: 10px"
+      >
+        <div class="form-check form-switch d-flex align-items-center">
+          <input
+            class="form-check-input me-2"
+            type="checkbox"
+            id="darkModeSwitch"
+          />
+          <label class="form-check-label mb-0" for="darkModeSwitch"
+            >Dark Mode</label
+          >
+        </div>
+      </div>
+
+      <script>
+        const darkModeSwitch = document.getElementById("darkModeSwitch");
+        const body = document.getElementById("timer-cont");
+
+        const savedTheme = localStorage.getItem("pomodoro-theme") || "light";
+        body.setAttribute("data-bs-theme", savedTheme);
+        darkModeSwitch.checked = savedTheme === "dark";
+
+        darkModeSwitch.addEventListener("change", () => {
+          const theme = darkModeSwitch.checked ? "dark" : "light";
+          body.setAttribute("data-bs-theme", theme);
+          localStorage.setItem("pomodoro-theme", theme);
+        });
+      </script>
       <p style="margin-top: 10px">Created by Pratyush Verma</p>
     </div>
     <audio id="alertSound" src="message-alert-190042.mp3"></audio>
