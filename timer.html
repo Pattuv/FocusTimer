@@ -72,7 +72,6 @@
     </div>
     <audio id="alertSound" src="message-alert-190042.mp3"></audio>
     <script>
-      // Parse query parameters
       const params = new URLSearchParams(window.location.search);
       const work = parseInt(params.get("work"), 10) * 60; // Convert minutes to seconds
       const rest = parseInt(params.get("rest"), 10) * 60; // Convert minutes to seconds
